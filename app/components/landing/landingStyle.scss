@@ -1,0 +1,20 @@
+@mixin BGProperties {
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+.LandingBG {
+  background-image: url(../../img/RedCar.jpeg);
+  @include BGProperties;
+}
+
+.SecondBG {
+  background-image: url(../../img/TeslaInterior.jpeg);
+  @include BGProperties;
+}
+
+.thridBG {
+  background-image: url(../../img/AudiBG.jpeg);
+  @include BGProperties;
+}

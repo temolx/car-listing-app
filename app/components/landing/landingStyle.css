@@ -1,0 +1,20 @@
+.LandingBG {
+  background-image: url(../../img/RedCar.jpeg);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+.SecondBG {
+  background-image: url(../../img/TeslaInterior.jpeg);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+
+.thridBG {
+  background-image: url(../../img/AudiBG.jpeg);
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}/*# sourceMappingURL=landingStyle.css.map */
