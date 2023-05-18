@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Drawer, List, ListItem, Card, Typography, ThemeProvider, CssBaseline, IconButton } from "@mui/material"
+import { Box, Drawer, List, ListItem, Card, Typography, ThemeProvider, CssBaseline, IconButton, Button, Divider } from "@mui/material"
 import { theme } from "../mui/customTheme";
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,7 +10,7 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../redux/store";
 import { toggleCartVisibility } from "../redux/slices/CartVisibility";
-import { incrementQuantity, decrementQuantity } from "../redux/slices/CartState";
+import { incrementQuantity, decrementQuantity, removeFromCart } from "../redux/slices/CartState";
 import { CartItem } from "../redux/slices/CartState";
 
 function Cart() {
@@ -24,7 +24,7 @@ function Cart() {
     <ThemeProvider theme={theme}>
     <CssBaseline />
 
-    <Box>
+    { cartItems.value.length > 0 ? <Box>
         <Drawer
         anchor="right"
         open={CartVisibility.value}
@@ -41,7 +41,7 @@ function Cart() {
                                 <IconButton color="primary" onClick={() => dispatch(decrementQuantity(cartItem.data.id))} ><RemoveIcon /></IconButton>
                             </Box>
 
-                            <IconButton color="primary"><DeleteIcon /></IconButton>
+                            <IconButton color="primary" onClick={() => dispatch(removeFromCart(cartItem.data.id))}><DeleteIcon /></IconButton>
                          </Box>
 
                         <Image src={ cartItem.data.image.front } alt="tesla car front view" style={{ width: '300px', height: '170px', objectFit: 'contain' }} />
@@ -61,8 +61,19 @@ function Cart() {
                     </Card>
                 </ListItem> ))}
             </List>
+            
+            <Box p={2}>
+                <Divider sx={{ mb: 1 }} />
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="h5" color="primary">Total:</Typography>
+                    <Typography variant="h5" color="primary">${ cartItems.value.reduce((a, b) => a + b.data.price * b.quantity, 0) }</Typography>
+                </Box>
+
+                <Button variant="contained" size="medium" fullWidth sx={{ mt: '10px' }}>Agree and continue</Button>
+            </Box>
         </Drawer>
-    </Box>
+    </Box> : null }
     </ThemeProvider>
   )
 }

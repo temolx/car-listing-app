@@ -10,15 +10,18 @@ import { FetchData } from "../API Data/FetchData"
 import { useEffect, useState } from "react"
 import { CarListingsType } from "../types/ApiTypes"
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slices/CartState";
+import { RootState } from "../redux/store";
 
 function page() {
 
     const dispatch = useDispatch();
 
+    const cartItems = useSelector((state: RootState) => state.CartState)
+
     const[cars, setCars] = useState<CarListingsType[] | []>([]);
-    const[hoveredImg, setHoveredImg] = useState<number>(0); // holds id for a car that is being currently hovered on
+    const[hoveredImg, setHoveredImg] = useState<number>(0); // holds id for a car that is currently being hovered on
 
     useEffect(() => {
         FetchData('cars')
@@ -57,7 +60,12 @@ function page() {
 
                         <CardActions>
                             <Button variant="contained" size="small" color="primary" sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }}>Learn More</Button>
-                            <Button variant="outlined" size="small" color="mainBlue" sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }} onClick={() => dispatch(addToCart(car))}>Purchase</Button>
+                            <Button variant="outlined"
+                            size="small" color="mainBlue"
+                            sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }}
+                            disabled={cartItems.value.some((cartItem) => cartItem.data.id === car.id)} 
+                            onClick={() => dispatch(addToCart(car))}>
+                            Purchase</Button>
                         </CardActions>
                     </CardContent>
                 </Card>

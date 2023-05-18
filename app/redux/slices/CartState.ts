@@ -39,6 +39,9 @@ export const CartState = createSlice({
                 }];
             }
         },
+        removeFromCart: (state: CartType, action: PayloadAction<number>) => { // takes in id
+            state.value = state.value.filter((el) => el.data.id !== action.payload);
+        },
         incrementQuantity: (state: CartType, action: PayloadAction<number>) => {
             state.value = state.value.map((cartItem) => {
                 if (cartItem.data.id === action.payload) {
@@ -64,4 +67,4 @@ export const CartState = createSlice({
     }
 })
 
-export const { addToCart, incrementQuantity, decrementQuantity } = CartState.actions;
+export const { addToCart, removeFromCart, incrementQuantity, decrementQuantity } = CartState.actions;
