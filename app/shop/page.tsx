@@ -3,6 +3,8 @@
 import { ThemeProvider, CssBaseline, Box, Card, CardContent, CardActions, CardMedia, Typography, Button, Grid, IconButton } from "@mui/material"
 import { theme } from "../mui/customTheme"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import TuneIcon from '@mui/icons-material/Tune';
+import FilterDrop from "../components/FilterDrop";
 
 import Image from "next/image"
 import Link from "next/link";
@@ -12,6 +14,7 @@ import { CarListingsType } from "../types/ApiTypes"
 
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slices/CartState";
+import { setCars } from "../redux/slices/Cars";
 import { RootState } from "../redux/store";
 
 function page() {
@@ -19,14 +22,14 @@ function page() {
     const dispatch = useDispatch();
 
     const cartItems = useSelector((state: RootState) => state.CartState)
+    const Cars = useSelector((state: RootState) => state.Cars)
 
-    const[cars, setCars] = useState<CarListingsType[] | []>([]);
     const[hoveredImg, setHoveredImg] = useState<number>(0); // holds id for a car that is currently being hovered on
 
     useEffect(() => {
         FetchData('cars')
             .then((res) => {
-                setCars(res);
+                dispatch(setCars(res))
                 console.log(res);
             }).catch((err) => console.log(err));
     }, [])
@@ -40,13 +43,22 @@ function page() {
     <Box p={10} sx={{ backgroundColor: '#fff' }}>
         <CssBaseline />
 
-        <Box sx={{ display: 'flex', mb: 5 }}>
-            <Typography variant="h3" color="primary" sx={{ mt: '5px' }} >Shop for cars</Typography>
-            <IconButton sx={{ ml: 1 }}><Link href='/'><ArrowBackIcon color="primary" /></Link></IconButton>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, position: 'relative' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h3" color="primary" >Shop for cars</Typography>
+                <IconButton sx={{ ml: 1 }}><Link href='/'><ArrowBackIcon color="primary" /></Link></IconButton>
+            </Box>
+
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="h6" color="primary">Filter</Typography>
+                <IconButton><TuneIcon color="primary" /></IconButton>
+            </Box>
+
+            <FilterDrop />
         </Box>
 
         <Grid container spacing={3}>
-        { cars && cars.map((car: CarListingsType) => (
+        { Cars.value && Cars.value.map((car: CarListingsType) => (
             <Grid item lg={3} md={6} xs={12} key={ car.id }>
                 <Card sx={{ maxWidth: 500 }}>
                     <CardContent sx={{ pt: 0 }}>
