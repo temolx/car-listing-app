@@ -1,18 +1,23 @@
 import { MenuList, MenuItem, ListItemText, Card, Box } from "@mui/material"
 import NestedCart from "./NestedCart"
 
-function FilterDrop() {
+interface IProps {
+    currentHover: string,
+    setCurrentHover: any
+}
+
+const FilterDrop = ({ currentHover, setCurrentHover } : IProps) => {
 
   return (
     <Box sx={{ position: 'absolute', right: 0, top: 40, minWidth: '150px' }}>
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative' }} onMouseLeave={() => setCurrentHover('')}>
         <Card>
             <MenuList>
-                <MenuItem>
+                <MenuItem onMouseEnter={() => setCurrentHover('brand')}>
                     <ListItemText>Brand</ListItemText>
                 </MenuItem>
 
-                <MenuItem>
+                <MenuItem onMouseEnter={() => setCurrentHover('model')}>
                     <ListItemText>Model</ListItemText>
                 </MenuItem>
 
@@ -22,8 +27,7 @@ function FilterDrop() {
             </MenuList>
         </Card>
 
-        {/* <NestedCart selection={'brand'} /> */}
-        <NestedCart selection={'model'} />
+        { currentHover === 'brand' ? <NestedCart selection={'brand'} /> : (currentHover === 'model' ? <NestedCart selection={'model'} /> : null) }
         </Box>
     </Box>
   )

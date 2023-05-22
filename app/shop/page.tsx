@@ -23,8 +23,11 @@ function page() {
 
     const cartItems = useSelector((state: RootState) => state.CartState)
     const Cars = useSelector((state: RootState) => state.Cars)
+    const Filters = useSelector((state: RootState) => state.Filters)
 
     const[hoveredImg, setHoveredImg] = useState<number>(0); // holds id for a car that is currently being hovered on
+    const[displayFilter, setDisplayFilter] = useState<boolean>(false);
+    const[currentHover, setCurrentHover] = useState<string>('');
 
     useEffect(() => {
         FetchData('cars')
@@ -51,14 +54,21 @@ function page() {
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Typography variant="h6" color="primary">Filter</Typography>
-                <IconButton><TuneIcon color="primary" /></IconButton>
+                <IconButton onClick={() => setDisplayFilter(!displayFilter)}><TuneIcon color="primary" /></IconButton>
             </Box>
 
-            <FilterDrop />
+            { displayFilter ? <FilterDrop currentHover={currentHover} setCurrentHover={setCurrentHover} /> : null }
         </Box>
 
         <Grid container spacing={3}>
-        { Cars.value && Cars.value.map((car: CarListingsType) => (
+        { Cars.value && Cars.value.filter((car: CarListingsType) => {
+            if (Filters.value.brand === '' && Filters.value.model === '' && Filters.value.price.min === 0 && Filters.value.price.max === 0) {
+                return car;
+            }
+            else {
+                return car.brand === Filters.value.brand || car.model === Filters.value.model;
+            }
+        }).map((car: CarListingsType) => (
             <Grid item lg={3} md={6} xs={12} key={ car.id }>
                 <Card sx={{ maxWidth: 500 }}>
                     <CardContent sx={{ pt: 0 }}>
