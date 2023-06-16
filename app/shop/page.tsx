@@ -62,11 +62,27 @@ function page() {
 
         <Grid container spacing={3}>
         { Cars.value && Cars.value.filter((car: CarListingsType) => {
-            if (Filters.value.brand === '' && Filters.value.model === '' && Filters.value.price.min === 0 && Filters.value.price.max === 0) {
+            if (Filters.value.brand === '' && Filters.value.model === '') {
                 return car;
             }
-            else {
+            else if (Filters.value.brand !== '' && Filters.value.model !== '') {
+                return car.brand === Filters.value.brand && car.model === Filters.value.model;
+            }
+            else if (Filters.value.brand === '' || Filters.value.model === '') {
                 return car.brand === Filters.value.brand || car.model === Filters.value.model;
+            }
+        }).filter((car: CarListingsType) => {
+            if (Filters.value.price.min === null && Filters.value.price.max === null) {
+                return car
+            }
+            else if (Filters.value.price.min !== null && Filters.value.price.max !== null) {
+                return car.price >= Filters.value.price.min && car.price <= Filters.value.price.max
+            }
+            else if (Filters.value.price.min !== null && Filters.value.price.max === null) {
+                return car.price >= Filters.value.price.min 
+            }
+            else if (Filters.value.price.min === null && Filters.value.price.max !== null) {
+                return car.price <= Filters.value.price.max 
             }
         }).map((car: CarListingsType) => (
             <Grid item lg={3} md={6} xs={12} key={ car.id }>

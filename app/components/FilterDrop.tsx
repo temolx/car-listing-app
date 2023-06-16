@@ -1,5 +1,6 @@
 import { MenuList, MenuItem, ListItemText, Card, Box } from "@mui/material"
 import NestedCart from "./NestedCart"
+import PriceFilter from "./PriceFilter"
 
 interface IProps {
     currentHover: string,
@@ -21,13 +22,13 @@ const FilterDrop = ({ currentHover, setCurrentHover } : IProps) => {
                     <ListItemText>Model</ListItemText>
                 </MenuItem>
 
-                <MenuItem>
+                <MenuItem onMouseEnter={() => setCurrentHover('price')}>
                     <ListItemText>Price</ListItemText>
                 </MenuItem>
             </MenuList>
         </Card>
 
-        { currentHover === 'brand' ? <NestedCart selection={'brand'} /> : (currentHover === 'model' ? <NestedCart selection={'model'} /> : null) }
+        { currentHover === 'brand' ? <NestedCart selection={'brand'} /> : (currentHover === 'model' ? <NestedCart selection={'model'} /> : (currentHover === 'price' ? <PriceFilter /> : null)) }
         </Box>
     </Box>
   )

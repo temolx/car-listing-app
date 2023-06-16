@@ -4,8 +4,8 @@ export type filters = {
     brand: string,
     model: string,
     price: {
-        min: number,
-        max: number
+        min: number | null,
+        max: number | null
     }
 }
 
@@ -18,8 +18,8 @@ const initialFilters = {
         brand: '',
         model: '',
         price: {
-            min: 0,
-            max: 0
+            min: null,
+            max: null
         }
     }
 }

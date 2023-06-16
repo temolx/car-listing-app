@@ -1,6 +1,6 @@
 'use client'
 
-import { MenuList, MenuItem, ListItemText, Card, Box } from "@mui/material"
+import { MenuList, MenuItem, ListItemText, Card } from "@mui/material"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "../redux/store"
 import { CarListingsType } from "../types/ApiTypes"
