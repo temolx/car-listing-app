@@ -1,6 +1,6 @@
 'use client'
 
-import { ThemeProvider, CssBaseline, Box, Card, CardContent, CardActions, CardMedia, Typography, Button, Grid, IconButton } from "@mui/material"
+import { ThemeProvider, CssBaseline, Box, Card, CardContent, CardActions, CardMedia, Typography, Button, Grid, IconButton, Chip, Stack } from "@mui/material"
 import { theme } from "../mui/customTheme"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import TuneIcon from '@mui/icons-material/Tune';
@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/slices/CartState";
 import { setCars } from "../redux/slices/Cars";
 import { RootState } from "../redux/store";
+import { setFilters } from "../redux/slices/Filters";
+
+import NotFound from "../components/NotFound";
 
 function page() {
 
@@ -41,6 +44,50 @@ function page() {
         setHoveredImg(carID);
     }
 
+    const handleFilterDelete = (filterType: string) => {
+        if (filterType !== 'min' && filterType !== 'max') {
+            dispatch(setFilters({
+                ...Filters.value,
+                [filterType]: ''
+            }))
+        }
+        else {
+            dispatch(setFilters({
+                ...Filters.value,
+                price: {
+                    ...Filters.value.price,
+                    [filterType]: null
+                }
+            }))
+        }
+    }
+
+
+    const filteredCars = Cars.value.filter((car: CarListingsType) => {
+        if (Filters.value.brand === '' && Filters.value.model === '') {
+            return car;
+        }
+        else if (Filters.value.brand !== '' && Filters.value.model !== '') {
+            return car.brand === Filters.value.brand && car.model === Filters.value.model;
+        }
+        else if (Filters.value.brand === '' || Filters.value.model === '') {
+            return car.brand === Filters.value.brand || car.model === Filters.value.model;
+        }
+    }).filter((car: CarListingsType) => {
+        if (Filters.value.price.min === null && Filters.value.price.max === null) {
+            return car
+        }
+        else if (Filters.value.price.min !== null && Filters.value.price.max !== null) {
+            return car.price >= Filters.value.price.min && car.price <= Filters.value.price.max
+        }
+        else if (Filters.value.price.min !== null && Filters.value.price.max === null) {
+            return car.price >= Filters.value.price.min 
+        }
+        else if (Filters.value.price.min === null && Filters.value.price.max !== null) {
+            return car.price <= Filters.value.price.max 
+        }
+    })
+
   return (
     <ThemeProvider theme={theme}>
     <Box p={10} sx={{ backgroundColor: '#fff' }}>
@@ -48,8 +95,18 @@ function page() {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, position: 'relative' }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h3" color="primary" >Shop for cars</Typography>
+                <Typography variant="h3" color="primary" sx={{ display: { xs: 'none', md: 'flex' } }} >Shop for cars</Typography>
                 <IconButton sx={{ ml: 1 }}><Link href='/'><ArrowBackIcon color="primary" /></Link></IconButton>
+
+                <Stack direction="row" spacing={1} sx={{ maxWidth: { xs: '180px', md: '100%' }, overflow: { xs: 'auto' } }}>
+                { Filters.value.brand !== '' ? <Chip label={Filters.value.brand} onDelete={() => handleFilterDelete('brand')}  /> : null }
+
+                { Filters.value.model !== '' ? <Chip label={Filters.value.model} onDelete={() => handleFilterDelete('model')}  /> : null }
+
+                { Filters.value.price.min !== null ? <Chip label={Filters.value.price.min} onDelete={() => handleFilterDelete('min')} /> : null }
+
+                { Filters.value.price.max !== null ? <Chip label={Filters.value.price.max} onDelete={() => handleFilterDelete('max')} /> : null }
+                </Stack>
             </Box>
 
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -60,31 +117,9 @@ function page() {
             { displayFilter ? <FilterDrop currentHover={currentHover} setCurrentHover={setCurrentHover} /> : null }
         </Box>
 
+        { filteredCars.length !== 0 ?
         <Grid container spacing={3}>
-        { Cars.value && Cars.value.filter((car: CarListingsType) => {
-            if (Filters.value.brand === '' && Filters.value.model === '') {
-                return car;
-            }
-            else if (Filters.value.brand !== '' && Filters.value.model !== '') {
-                return car.brand === Filters.value.brand && car.model === Filters.value.model;
-            }
-            else if (Filters.value.brand === '' || Filters.value.model === '') {
-                return car.brand === Filters.value.brand || car.model === Filters.value.model;
-            }
-        }).filter((car: CarListingsType) => {
-            if (Filters.value.price.min === null && Filters.value.price.max === null) {
-                return car
-            }
-            else if (Filters.value.price.min !== null && Filters.value.price.max !== null) {
-                return car.price >= Filters.value.price.min && car.price <= Filters.value.price.max
-            }
-            else if (Filters.value.price.min !== null && Filters.value.price.max === null) {
-                return car.price >= Filters.value.price.min 
-            }
-            else if (Filters.value.price.min === null && Filters.value.price.max !== null) {
-                return car.price <= Filters.value.price.max 
-            }
-        }).map((car: CarListingsType) => (
+        { Cars.value && filteredCars.map((car: CarListingsType) => (
             <Grid item lg={3} md={6} xs={12} key={ car.id }>
                 <Card sx={{ maxWidth: 500 }}>
                     <CardContent sx={{ pt: 0 }}>
@@ -109,7 +144,7 @@ function page() {
                 </Card>
             </Grid>
         )) }
-        </Grid>
+        </Grid> : <NotFound /> }
     </Box>
     </ThemeProvider>
   )

@@ -11,16 +11,16 @@ function PriceFilter() {
     const dispatch = useDispatch();
     const Filters = useSelector((state: RootState) => state.Filters);
 
-    const[minValue, setMinValue] = useState<number>(0);
-    const[maxValue, setMaxValue] = useState<number>(0);
+    const[minValue, setMinValue] = useState<number | null>(null);
+    const[maxValue, setMaxValue] = useState<number | null>(null);
 
 
     const ApplyFilters = () => {
         dispatch(setFilters({
             ...Filters.value,
             price: {
-                min: minValue,
-                max: maxValue
+                min: minValue === null ? Filters.value.price.min : minValue,
+                max: maxValue === null ? Filters.value.price.max : maxValue
             }
         }))
     }
