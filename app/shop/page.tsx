@@ -124,7 +124,7 @@ function page() {
                 <Card sx={{ maxWidth: 500 }}>
                     <CardContent sx={{ pt: 0 }}>
                         <CardMedia>
-                            <Image src={ hoveredImg !== car.id ? car.image.front : car.image.side } alt='tesla front' style={{ objectFit: 'contain', width: '100%', height: '200px' }} onMouseEnter={() => showSide(car.id)} onMouseLeave={() => setHoveredImg(0)} />
+                            <Image src={ hoveredImg !== car.id ? car.image.front : car.image.side } alt='car' style={{ objectFit: 'contain', width: '100%', height: '200px' }} onMouseEnter={() => showSide(car.id)} onMouseLeave={() => setHoveredImg(0)} />
                         </CardMedia>
                         
                         <Typography variant="h5" color="primary">{ car.brand }</Typography>
@@ -132,10 +132,10 @@ function page() {
                         <Typography variant="h6" color="primary">${ car.price }</Typography>
 
                         <CardActions>
-                            <Button variant="contained" size="small" color="primary" sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }}>Learn More</Button>
+                            <Link href={'/shop/' + car.id}><Button variant="contained" size="small" color="primary" sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }}>Learn More</Button></Link>
                             <Button variant="outlined"
                             size="small" color="mainBlue"
-                            sx={{ ml: '-7px', textTransform: 'none', boxShadow: 'none' }}
+                            sx={{ ml: '6px', textTransform: 'none', boxShadow: 'none' }}
                             disabled={cartItems.value.some((cartItem) => cartItem.data.id === car.id)} 
                             onClick={() => dispatch(addToCart(car))}>
                             Purchase</Button>

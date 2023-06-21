@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { CarListings, CarListingsType } from "@/app/data/CarListings";
+import { CarListings } from "@/app/data/CarListings";
 
 export async function GET() {
     return NextResponse.json(CarListings);
