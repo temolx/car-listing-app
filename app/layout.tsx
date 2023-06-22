@@ -5,7 +5,9 @@ import CartIcon from './components/CartIcon'
 import Cart from './components/Cart'
 import CustomProvider from './redux/CustomProvider'
 
-const montserrat = Montserrat({ subsets: ['latin'] })
+export const montserrat = Montserrat({ 
+  subsets: ['latin'],
+ })
 
 export const metadata = {
   title: 'Car Listing App',

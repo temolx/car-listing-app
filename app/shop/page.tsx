@@ -90,7 +90,7 @@ function page() {
 
   return (
     <ThemeProvider theme={theme}>
-    <Box p={10} sx={{ backgroundColor: '#fff' }}>
+    <Box p={10}>
         <CssBaseline />
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1, position: 'relative' }}>
