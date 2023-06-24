@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material'
-import { montserrat } from '../layout';
+// import { montserrat } from '../layout';
 
 declare module "@mui/material/styles/createPalette" {
   interface PaletteOptions {
@@ -34,23 +34,23 @@ export const theme = createTheme({
     typography: {
         h2: {
             fontSize: '70px',
-            fontFamily: montserrat.style.fontFamily,
+            fontFamily: 'Montserrat',
             fontWeight: '200',
         },
         h3: {
           fontSize: '25px',
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: 'Montserrat',
           fontWeight: '600',
           textTransform: 'uppercase'
         },
         h5: {
           fontSize: '18px',
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: 'Montserrat',
           fontWeight: '700',
         },
         h6: {
           fontSize: '16px',
-          fontFamily: montserrat.style.fontFamily,
+          fontFamily: 'Montserrat',
           fontWeight: '600',
         }
     },

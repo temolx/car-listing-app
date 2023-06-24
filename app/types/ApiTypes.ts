@@ -13,5 +13,5 @@ export type CarListingsType = {
     image: {
         front: StaticImageData,
         side: StaticImageData
-    }
+    } | null
 }

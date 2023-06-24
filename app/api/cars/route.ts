@@ -6,18 +6,20 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-    const { brand, model, color, type, engine, wheel, mileage } = await request.json();
+    const { brand, model, price, color, type, engine, wheel, mileage } = await request.json();
     const lastID = CarListings[CarListings.length - 1].id;
 
     const newListing = {
         id: lastID + 1,
         brand,
         model,
+        price,
         color,
         type,
         engine,
         wheel,
-        mileage
+        mileage,
+        image: null
     }
 
     CarListings.push(newListing)
